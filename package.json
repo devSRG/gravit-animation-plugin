@@ -1,0 +1,29 @@
+{
+  "name": "animation-panel",
+  "version": "0.9.0",
+  "description": "Gravit Designer plugin to allow basic animation with GIF output.",
+  "main": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "animation",
+    "gif",
+    "plugin"
+  ],
+  "author": "Sachintha Gunaratne",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.1",
+    "webpack": "^4.28.3"
+  },
+  "dependencies": {}
+}
