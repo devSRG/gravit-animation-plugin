@@ -929,19 +929,19 @@ AnimationPanel.prototype.preview = function(event, type) {
     switch(type) {
     case ANIMATE.TYPE.TRANSLATE:
         data = fetchProperties(event, type);
-        Animate.translate(data.element, data.x, data.y, data.dur, data.easing, data.origin);
+        Animate.translate(data.element_id, data.x, data.y, data.dur, data.easing, data.origin);
         break;
     case ANIMATE.TYPE.SCALE:
         data = fetchProperties(event, type);
-        Animate.scale(data.element, data.x, data.y, data.dur, data.easing, data.origin);
+        Animate.scale(data.element_id, data.x, data.y, data.dur, data.easing, data.origin);
         break;
     case ANIMATE.TYPE.ROTATE:
         data = fetchProperties(event, type);
-        Animate.rotate(data.element, data.r, data.dur, data.easing, data.origin);
+        Animate.rotate(data.element_id, data.r, data.dur, data.easing, data.origin);
         break;
     case ANIMATE.TYPE.COLOR:
         data = fetchProperties(event, type);
-        Animate.color(data.element, data.clr, data.opt, data.dur, data.easing);
+        Animate.color(data.element_id, data.clr, data.opt, data.dur, data.easing);
         break;
     case 'object':
         var duration = calculateDuration(anim);
@@ -1072,7 +1072,7 @@ function fetchProperties(event, type) {
         data =  {
             'id': ID,
             'type': ANIMATE.TYPE.TRANSLATE,
-            'element': element._layId || element._effID,
+            'element_id': element._effId,
             'x': x,
             'y': y,
             'dur': dur,
@@ -1093,7 +1093,7 @@ function fetchProperties(event, type) {
         data = {
             'id': ID,
             'type': ANIMATE.TYPE.SCALE,
-            'element': element._layId || element._effID,
+            'element_id': element._effId,
             'x': x,
             'y': y,
             'dur': dur,
@@ -1114,7 +1114,7 @@ function fetchProperties(event, type) {
         data = {
             'id': ID,
             'type': ANIMATE.TYPE.ROTATE,
-            'element': element._layId || element._effID,
+            'element_id': element._effId,
             'r': r,
             'dur': dur,
             'delay': delay,
@@ -1133,7 +1133,7 @@ function fetchProperties(event, type) {
         data = {
             'id': ID,
             'type': ANIMATE.TYPE.COLOR,
-            'element': element._layId || element._effID,
+            'element_id': element._effId,
             'clr': color,
             'opt': opacity,
             'dur': dur,

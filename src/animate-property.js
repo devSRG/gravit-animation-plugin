@@ -31,11 +31,11 @@ let fps_val = 24;
 
 let Animate = {};
 
-Animate.translate = function(layId, x, y, dur, easing, origin) {
+Animate.translate = function(id, x, y, dur, easing, origin) {
     var start = null,
         then = performance.now(),
         tot = 0,
-        element = findElement(layId),
+        element = findElement(id),
         Easing = selectEase(easing),
         onion_skins = [],
         prev_delta_x = 0,
@@ -98,7 +98,7 @@ Animate.translate = function(layId, x, y, dur, easing, origin) {
         if(timestamp - start <= dur || loop) {
             window.requestAnimationFrame(step);
         } else {
-            //setTimeout(() => { reset([{element: layId, x: orig_bbox.getX(), y: orig_bbox.getY(), type: 'translate'}]); }, 300);
+            //setTimeout(() => { reset([{element: id, x: orig_bbox.getX(), y: orig_bbox.getY(), type: 'translate'}]); }, 300);
             //elem.setProperty('x', initial_pos.x);
             //console.log(bbox.getX(), bbox.getY(), x, y);
             //setTimeout(() => { element.transform(new GTransform().translated(-x, -y)) }, 300);
@@ -114,7 +114,7 @@ Animate.translate = function(layId, x, y, dur, easing, origin) {
     window.requestAnimationFrame(step);
 }
 
-Animate.scale = function(layId, x, y, dur, easing, origin) {
+Animate.scale = function(id, x, y, dur, easing, origin) {
     /*var initial_pos = {
         'x': bbox.getX(),
         'y': bbox.getY()
@@ -122,7 +122,7 @@ Animate.scale = function(layId, x, y, dur, easing, origin) {
     var start = null,
         then = performance.now(),
         tot = 0,
-        element = findElement(layId),
+        element = findElement(id),
         Easing = selectEase(easing),
         prev_delta_x = 0,
         prev_delta_y = 0;
@@ -173,11 +173,11 @@ Animate.scale = function(layId, x, y, dur, easing, origin) {
     window.requestAnimationFrame(step);
 };
 
-Animate.rotate = function(layId, r, dur, easing, origin) {
+Animate.rotate = function(id, r, dur, easing, origin) {
     var start = null,
         then = performance.now(),
         tot = 0,
-        element = findElement(layId),
+        element = findElement(id),
         Easing = selectEase(easing),
         prev_delta_r = 0,
         tot_r = 0;
@@ -185,9 +185,6 @@ Animate.rotate = function(layId, r, dur, easing, origin) {
     gDesigner.getActiveDocument().getEditor().updateSelection(false, []);
 
     var t_coord = originTransformation(origin);
-
-    t_coord.x = (x == 0) ? 0: t_coord.x;
-    t_coord.y = (y == 0) ? 0: t_coord.y;
 
     function step(timestamp) {
         if(!start) start = timestamp;
@@ -225,11 +222,11 @@ Animate.rotate = function(layId, r, dur, easing, origin) {
     window.requestAnimationFrame(step);
 };
 
-Animate.color = function(layId, color, opacity, dur, easing) {
+Animate.color = function(id, color, opacity, dur, easing) {
     var start = null,
         then = performance.now(),
         tot = 0,
-        element = findElement(layId),
+        element = findElement(id),
         Easing = selectEase(easing),
         fill_layer = element.getPaintLayers().getFillLayers()[0],
         initial_color = fill_layer.getProperty('_pt')._value,
@@ -301,7 +298,7 @@ Animate.objects = function(obj, dur) {
 
         for(var i = 0; i < obj.length; i++) {
             if(obj[i].type == ANIMATE.TYPE.TRANSLATE) {
-                var element = findElement(obj[i].element),
+                var element = findElement(obj[i].element_id),
                     bbox = element.getGeometryBBox(),
                     x = obj[i].x,
                     y = obj[i].y,
@@ -339,7 +336,7 @@ Animate.objects = function(obj, dur) {
                     element.transform(new GTransform().translated(adj_x, adj_y));
                 }
             } else if(obj[i].type == ANIMATE.TYPE.SCALE) {
-                var element = findElement(obj[i].element),
+                var element = findElement(obj[i].element_id),
                     bbox = element.getGeometryBBox(),
                     x = obj[i].x,
                     y = obj[i].y,
@@ -382,7 +379,7 @@ Animate.objects = function(obj, dur) {
                         .translated(bbox.getX() + tr_x, bbox.getY() + tr_y));
                 }
             } else if(obj[i].type == ANIMATE.TYPE.COLOR) {
-                var element = findElement(obj[i].element),
+                var element = findElement(obj[i].element_id),
                     color = obj[i].clr,
                     opacity = obj[i].opt,
                     dur_c = 0,
@@ -474,6 +471,8 @@ Animate.objects = function(obj, dur) {
                         fill_layer.setProperty('_op', i_o + a_o);
                     }
                 }
+            } else if(obj[i].type == ANIMATE.TYPE.ROTATE) {
+
             }
         }
 
@@ -712,7 +711,7 @@ function findElement(id) {
     let arr = ELEMENTS;
 
     for(let i = 0; i < arr.length; i++) {
-        if(arr[i]._layId === id) {
+        if(arr[i]._effId === id) {
             return arr[i];
         }
     }
